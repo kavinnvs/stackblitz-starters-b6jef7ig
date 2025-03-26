@@ -1,18 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookie Count Tracker</title>
+    <title>Cookie Counter</title>
 </head>
-
 <body>
-    <h1>Welcome to the Cookie Count Tracker!</h1>
-    <p>Page views for this session:</p>
-    <div id="countDisplay">Loading count...</div>
+    <h1>Cookie-based Counter</h1>
+    <p>Page Views: <span id="count">0</span></p>
+
+    <script>
+        
+        function getCookie(name) {
+            let cookies = document.cookie.split("; ");
+            for (let cookie of cookies) {
+                let [key, value] = cookie.split("=");
+                if (key === name) {
+                    return value;
+                }
+            }
+            return null;
+        }
+
+        
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                let date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + value + expires + "; path=/";
+        }
+
+        
+        function updateCounter() {
+            let count = getCookie("pageCount");
+            count = count ? parseInt(count) + 1 : 1; 
+            setCookie("pageCount", count, 7); 
+            document.getElementById("count").innerText = count;
+        }
+
+        
+        updateCounter();
+    </script>
 </body>
-
-<script src="./script.js"></script>
-
 </html>
